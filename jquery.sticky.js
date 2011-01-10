@@ -10,7 +10,7 @@
 		
 		this.each(function() {
 			if (options) { 
-		    	$.extend(settings,options);
+				$.extend(settings,options);
 			}
 			
 			var $stopper = $(settings.stopper);
