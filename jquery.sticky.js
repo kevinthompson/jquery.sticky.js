@@ -5,8 +5,7 @@
 			'offset'			:	20,
 			'fixedClass'		:	'fixed',
 			'absoluteClass'		:	'absolute',
-			'placeholderClass'	:	'placeholder',
-			'useClass'			:	true
+			'placeholderClass'	:	'placeholder'
 		};
 		
 		this.each(function() {
