@@ -31,7 +31,6 @@
 					
 					var stoppers   = $(settings.stopper).not('.' + settings.classes.placeholder);
 					sticky.stopper = stoppers.filter(':gt(' + stoppers.index(sticky.element) + ')').first() || $(sticky.element.attr('data-stopper'));
-					log(stoppers.filter(':gt(' + stoppers.index(sticky.element) + ')').first());
 					
 					if(settings.placeholder){
 						sticky.placeholder = sticky.element.clone().addClass(settings.classes.placeholder).css({
@@ -47,6 +46,7 @@
 						'origin'	: sticky.element.offset().top - settings.offset
 					};
 					
+					sticky.disable();
 					sticky.update();
 					$window.bind('resize', function(){
 						sticky.update();
@@ -68,18 +68,18 @@
 						if (sticky.stopper.length > 0) {
 							sticky.units.stopper = sticky.stopper.offset().top - parseInt(sticky.stopper.css('marginTop'));
 						}
-						if (sticky.stopper.length > 0 && sticky.units.bottom > sticky.units.stopper) {
+						
+						if (sticky.element.hasClass(settings.classes.sticky) && sticky.stopper.length > 0 && sticky.units.bottom >= sticky.units.stopper) {
 							sticky.enable(sticky.units.top - (sticky.units.bottom - sticky.units.stopper));
-						} else if (sticky.units.doctop > sticky.units.origin){
-							sticky.enable();
-						} else if ((sticky.units.doctop <= sticky.units.origin) && sticky.element.hasClass(settings.classes.sticky)) {
+						} else if (sticky.element.hasClass(settings.classes.static) && sticky.units.doctop >= sticky.units.origin){
+							sticky.enable(sticky.units.top);
+						} else if (sticky.element.hasClass(settings.classes.sticky) && sticky.units.doctop < sticky.units.origin) {
 							sticky.disable();
 						}
 					}
 				},
 				
 				'enable'	: function(top){
-					top = top || sticky.units.top;
 					sticky.element
 						.removeClass(settings.classes.static)
 						.addClass(settings.classes.sticky)
@@ -88,6 +88,7 @@
 							'position'	:	'fixed',
 							'z-index'	:	'999'
 						});
+					sticky.enabled = true;
 				},
 			
 				'disable'	: function(){
@@ -99,6 +100,7 @@
 							'position'	:	'absolute',
 							'z-index'	:	'auto'
 						});
+					sticky.enabled = false;
 				}
 			}
 			
