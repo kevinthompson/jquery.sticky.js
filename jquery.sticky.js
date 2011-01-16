@@ -28,7 +28,11 @@
 				'init'		: function($this){
 					
 					sticky.element = $this;
-			
+					
+					var stoppers   = $(settings.stopper).not('.' + settings.classes.placeholder);
+					sticky.stopper = stoppers.filter(':gt(' + stoppers.index(sticky.element) + ')').first() || $(sticky.element.attr('data-stopper'));
+					log(stoppers.filter(':gt(' + stoppers.index(sticky.element) + ')').first());
+					
 					if(settings.placeholder){
 						sticky.placeholder = sticky.element.clone().addClass(settings.classes.placeholder).css({
 							'visibility':'hidden'
@@ -37,7 +41,6 @@
 					sticky.element.css({
 						'width'	: sticky.element.width()
 					}).addClass(settings.classes.static);
-					sticky.stopper = $(settings.stopper) || $(sticky.element.attr('data-stopper'))
 					sticky.units = {
 						'top'		: settings.offset - parseInt(sticky.element.css('marginTop')),
 						'height'	: sticky.element.outerHeight() + parseInt(sticky.element.css('marginTop')) + parseInt(sticky.element.css('marginBottom')),
