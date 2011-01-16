@@ -88,7 +88,6 @@
 							'position'	:	'fixed',
 							'z-index'	:	'999'
 						});
-					sticky.enabled = true;
 				},
 			
 				'disable'	: function(){
@@ -100,7 +99,6 @@
 							'position'	:	'absolute',
 							'z-index'	:	'auto'
 						});
-					sticky.enabled = false;
 				}
 			}
 			
