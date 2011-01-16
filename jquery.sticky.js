@@ -8,8 +8,8 @@
 			'offset'			: 20,
 			'placeholder'		: true,
 			'classes'			: {
-				'fixed'			: 'fixed',
-				'absolute'		: 'absolute',
+				'sticky'		: 'sticky',
+				'static'		: 'static',
 				'placeholder'	: 'placeholder',
 			}
 		};
@@ -36,7 +36,7 @@
 					}
 					sticky.element.css({
 						'width'	: sticky.element.width()
-					}).addClass(settings.classes.absolute);
+					}).addClass(settings.classes.static);
 					sticky.stopper = $(settings.stopper) || $(sticky.element.attr('data-stopper'))
 					sticky.units = {
 						'top'		: settings.offset - parseInt(sticky.element.css('marginTop')),
@@ -69,7 +69,7 @@
 							sticky.enable(sticky.units.top - (sticky.units.bottom - sticky.units.stopper));
 						} else if (sticky.units.doctop > sticky.units.origin){
 							sticky.enable();
-						} else if ((sticky.units.doctop <= sticky.units.origin) && sticky.element.hasClass(settings.classes.fixed)) {
+						} else if ((sticky.units.doctop <= sticky.units.origin) && sticky.element.hasClass(settings.classes.sticky)) {
 							sticky.disable();
 						}
 					}
@@ -78,16 +78,24 @@
 				'enable'	: function(top){
 					top = top || sticky.units.top;
 					sticky.element
-						.removeClass(settings.classes.absolute)
-						.addClass(settings.classes.fixed)
-						.css('top',top);
+						.removeClass(settings.classes.static)
+						.addClass(settings.classes.sticky)
+						.css({
+							'top'		:	top,
+							'position'	:	'fixed',
+							'z-index'	:	'999'
+						});
 				},
 			
 				'disable'	: function(){
 					sticky.element
-						.removeClass(settings.classes.fixed)
-						.addClass(settings.classes.absolute)
-						.css('top','auto');
+						.removeClass(settings.classes.sticky)
+						.addClass(settings.classes.static)
+						.css({
+							'top'		:	'auto',
+							'position'	:	'absolute',
+							'z-index'	:	'auto'
+						});
 				}
 			}
 			
