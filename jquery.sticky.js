@@ -2,7 +2,7 @@
 
 // Sticky – Keeps elements fixed as the user scrolls.
 (function($){
-	$.fn.sticky = function( options ){
+	$.fn.sticky = function( options, stick, start, stop ){
 		
 		var settings = {
 			'offset'			: 20,
@@ -14,7 +14,6 @@
 				'sticky'		: 'sticky',
 				'stopped'		: 'stopped',
 				'placeholder'	: 'placeholder',
-				'disabled'		: 'disabled'
 			}
 		};
 		
@@ -46,7 +45,7 @@
 					}
 					
 					// Create Placeholder
-					sticky.placeholder = sticky.element.clone().addClass(settings.classes.placeholder).css({
+					sticky.placeholder = sticky.element.clone().empty().addClass(settings.classes.placeholder).css({
 						'opacity'	: 0,
 						'height'	: sticky.element.outerHeight()
 					}).insertAfter(sticky.element);
@@ -67,6 +66,7 @@
 					$window.bind('resize scroll', function(){
 						sticky.update();
 					});
+					sticky.update();
 				},
 			
 				'update'	: function(){
@@ -96,14 +96,26 @@
 						// Stop at stopper
 						if (!sticky.element.hasClass(settings.classes.stopped) && sticky.stopper.length > 0 && sticky.element.offset().top > sticky.units.stop) {
 							sticky.stop(sticky.units.stop,'stop');
+
+							if (typeof stick == 'function') {
+						        stick.call(this);
+						    }
 							
 						// Update Position
 						} else if (!sticky.element.hasClass(settings.classes.sticky) && sticky.units.doctop >= sticky.units.start && (sticky.stopper.length == 0 || (sticky.stopper.length > 0 && (sticky.units.doctop + settings.offset) < sticky.units.stop))){
 							sticky.stick(settings.offset);
+
+							if (typeof stick == 'function') {
+						        stick.call(this);
+						    }
 						
 						// Stop at starting position
 						} else if (!sticky.element.hasClass(settings.classes.start) && sticky.units.doctop < sticky.units.start) {
 							sticky.stop(sticky.placeholder.offset().top,'start');
+
+							if (typeof start == 'function') {
+						        start.call(this);
+						    }
 						}
 						
 					}else{
