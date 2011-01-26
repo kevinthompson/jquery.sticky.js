@@ -2,11 +2,11 @@
 
 // Sticky – Keeps elements fixed as the user scrolls.
 (function($){
-	$.fn.sticky = function( options, stick, start, stop ){
+	$.fn.sticky = function( options ){
 		
 		var settings = {
 			'offset'			: 20,
-			'mode'				: 'fixed',
+			'mode'				: 'animate',
 			'stopper'			: '',
 			'speed'				: 500,
 			'classes'			: {
@@ -15,7 +15,11 @@
 				'sticky'		: 'jquery-sticky-sticky',
 				'stopped'		: 'jquery-sticky-stopped',
 				'placeholder'	: 'jquery-sticky-placeholder'
-			}
+			},
+			
+			'onStart'			: '',
+			'onStick'			: '',
+			'onStop'			: ''
 		};
 		
 		this.each(function() {
@@ -98,26 +102,25 @@
 						if (!sticky.element.hasClass(settings.classes.stopped) && sticky.stopper.length > 0 && (sticky.units.doctop + settings.offset + sticky.element.outerHeight()) >= sticky.units.stop) {
 							sticky.stop(sticky.units.stop - sticky.element.outerHeight(),'stop');
 
-							if (typeof stick == 'function') {
-						        stick.call(this);
+							if (typeof settings.onStop == 'function') {
+						        settings.onStop.call(this);
 						    }
 							
 						// Update Position
 						} else if (!sticky.element.hasClass(settings.classes.sticky) && sticky.units.doctop > (sticky.units.start - settings.offset) && (sticky.stopper.length == 0 || (sticky.stopper.length > 0 && (sticky.units.doctop + settings.offset + sticky.element.outerHeight()) < sticky.units.stop))){
 							sticky.stick(settings.offset);
-							
-							if(settings.mode == 'animate') sticky.animate(sticky.units.doctop + settings.offset);
+							sticky.animate(sticky.units.doctop + settings.offset);
 
-							if (typeof stick == 'function') {
-						        stick.call(this);
+							if (typeof settings.onStick == 'function') {
+						        settings.onStick.call(this);
 						    }
 						
 						// Stop at starting position
 						} else if (!sticky.element.hasClass(settings.classes.start) && sticky.units.doctop <= (sticky.units.start - settings.offset)) {
 							sticky.stop(sticky.units.start,'start');
 
-							if (typeof start == 'function') {
-						        start.call(this);
+							if (typeof settings.onStart == 'function') {
+						        settings.onStart.call(this);
 						    }
 						}
 						
@@ -167,7 +170,7 @@
 						.removeClass(oldClass)
 						.addClass(newClass);
 						
-					if(settings.mode == 'fixed'){
+					if(!settings.mode == 'fixed'){
 						sticky.element.css({
 							'top'		: top,
 							'position'	: 'absolute'
