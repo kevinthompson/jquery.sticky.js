@@ -6,10 +6,11 @@
 		
 		var settings = {
 			'offset'			: 20,
-			'placeholder'		: true,
+			'mode'				: 'animate',
 			'stopper'			: '',
 			'speed'				: 500,
 			'classes'			: {
+				'start'			: 'start',
 				'sticky'		: 'sticky',
 				'stopped'		: 'stopped',
 				'placeholder'	: 'placeholder',
@@ -32,147 +33,134 @@
 					
 					sticky.element = $this;
 					
-					var stoppers   = $(settings.stopper).not('.' + settings.classes.placeholder);
-					sticky.stopper = sticky.element.is(settings.stopper) ? stoppers.filter(':gt(' + stoppers.index(sticky.element) + ')').first() : stoppers.first();
-					
-					var marginTop		= parseInt(sticky.element.css('margin-top')) || 0;
-					var marginBottom	= parseInt(sticky.element.css('margin-bottom')) || 0
-					
+					// Set Base Units
 					sticky.units = {
-						'top'		: settings.offset - marginTop,
-						'height'	: sticky.element.outerHeight() + marginTop + marginBottom,
-						'origin'	: sticky.element.offset().top - settings.offset
+						'height'	: sticky.element.outerHeight(),
+						'start'		: sticky.element.offset().top - settings.offset
 					};
 					
-					sticky.enable();
+					// Find Stopper
+					if(settings.stopper != ''){
+						var stoppers		= $(settings.stopper).not('.' + settings.classes.placeholder);
+						sticky.stopper		= sticky.element.is(settings.stopper) ? stoppers.filter(':gt(' + stoppers.index(sticky.element) + ')').first() : stoppers.first();
+					}
+					
+					// Create Placeholder
+					sticky.placeholder = sticky.element.clone().addClass(settings.classes.placeholder).css({
+						'opacity'	: 0,
+						'height'	: sticky.element.outerHeight()
+					}).insertAfter(sticky.element);
+					
+					// Move Sticky Element
+					sticky.element
+						.appendTo('body')
+						.css({
+							'width'		: sticky.placeholder.width(),
+							'margin'	: 0,
+							'left'		: sticky.placeholder.offset().left,
+							'top'		: sticky.placeholder.offset().top,
+							'position'	: 'absolute',
+							'z-index'	: '999'
+						});
+					
+					// Bind Events
 					$window.bind('resize scroll', function(){
 						sticky.update();
 					});
 				},
 			
 				'update'	: function(){
-					if(settings.placeholder && sticky.placeholder.css('display') != 'none'){
-						sticky.element.width(sticky.placeholder.width());
-					}
+
+					// Update Sticky Element CSS
+					sticky.element.css({
+						'width'	: sticky.placeholder.width(),
+						'left'	: sticky.placeholder.offset().left
+					});
+					sticky.placeholder.css('height',sticky.element.outerHeight());
 				
 					if((sticky.element.outerHeight() + settings.offset) < $window.height()){
 						
-						// Enable Sticky Behavior
-						if(sticky.status == 'disabled') sticky.enable();
-						
+						// Get Window Top
 						sticky.units.doctop = $document.scrollTop();
-						
-						sticky.units.bottom = parseInt(sticky.units.top + sticky.units.doctop + sticky.units.height);
-						if (sticky.stopper.length > 0) {
-							sticky.units.stopper = sticky.stopper.offset().top - parseInt(sticky.stopper.css('marginTop'));
+					
+						// Update Stop Position
+						if(sticky.stopper.length > 0){
+							sticky.units.stop = sticky.stopper.offset().top - (sticky.element.outerHeight() - settings.offset + 1);	
 						}
-						
-						// Update Position In IE						
-						if($.browser.msie && sticky.status == 'sticky'){
+					
+						// Update Animated Position
+						if(sticky.element.hasClass(settings.classes.sticky) && ($.browser.msie || settings.mode == 'animate')){
 							sticky.animate(sticky.units.doctop + settings.offset);
 						}
 						
-						if (sticky.status != 'stopped' && sticky.stopper.length > 0 && sticky.units.bottom >= sticky.units.stopper) {
-							// Stop at stopper
-							sticky.stop(sticky.units.stopper - sticky.element.outerHeight(),'stopper');
-						} else if (sticky.status != 'sticky' && sticky.units.doctop >= sticky.units.origin && (sticky.stopper.length == 0 || (sticky.stopper.length > 0 && sticky.units.bottom < sticky.units.stopper))){
-							// Stick if below original position
-							sticky.stick(sticky.units.top);
-						} else if (sticky.status != 'stopped' && sticky.units.doctop < sticky.units.origin) {
-							// Stop at original position
-							sticky.stop('auto','origin');
+						// Stop at stopper
+						if (!sticky.element.hasClass(settings.classes.stopped) && sticky.stopper.length > 0 && sticky.element.offset().top > sticky.units.stop) {
+							sticky.stop(sticky.units.stop,'stop');
+							
+						// Update Position
+						} else if (!sticky.element.hasClass(settings.classes.sticky) && sticky.units.doctop >= sticky.units.start && (sticky.stopper.length == 0 || (sticky.stopper.length > 0 && (sticky.units.doctop + settings.offset) < sticky.units.stop))){
+							sticky.stick(settings.offset);
+						
+						// Stop at starting position
+						} else if (!sticky.element.hasClass(settings.classes.start) && sticky.units.doctop < sticky.units.start) {
+							sticky.stop(sticky.placeholder.offset().top,'start');
 						}
+						
 					}else{
-						// Disable Sticky Behavior
-						if(sticky.status != 'disabled') sticky.disable();
-					}
-				},
-				
-				'enable' : function(){
-					sticky.status = 'enabled';
-					if(settings.placeholder){
-						sticky.placeholder = sticky.element.clone().addClass(settings.classes.placeholder).css({
-							'visibility': 'hidden'
-						}).insertAfter(sticky.element);
-					}
-					sticky.element.css({
-						'width'	: sticky.element.width(),
-						'margin-bottom' : 0
-					});
-					if($.browser.msie) sticky.element.css({
-						'position'	:	'absolute',
-						'top'		:	sticky.units.origin + settings.offset
-					});
-					sticky.stop('auto','origin');
-				},
-				
-				'stick'	: function(top){
-					sticky.status = 'sticky';
-					if(settings.placeholder) sticky.placeholder.css('display','block');
-					
-					sticky.element
-						.removeClass(settings.classes.stopped)
-						.addClass(settings.classes.sticky);
-					if($.browser.msie){
-						sticky.animate(sticky.units.doctop + settings.offset);
-						sticky.element.css({
-							'position'	:	'absolute',
-							'z-index'	:	'999',
-							'clear'		:	'both'
-						});
-					}else{
-						sticky.element.css({
-							'top'		:	top,
-							'position'	:	'fixed',
-							'z-index'	:	'999'
-						});
+						
+						// Reset to Start
+						if(!sticky.element.hasClass(settings.classes.start)){
+							sticky.stop(sticky.placeholder.offset().top,'start');	
+						}
 					}
 				},
 				
 				'animate'	: function(top){
-					sticky.element.stop();
-					if(top < (sticky.units.origin + settings.offset)){
-						sticky.disable();
-					}else{
-						if(sticky.stopper.length > 0 && (top + sticky.units.height + settings.offset) > sticky.units.stopper){
-							top = sticky.units.stopper - (sticky.units.height - settings.offset);
+					clearTimeout(sticky.timer);
+					sticky.timer = setTimeout(function(){
+						if(top >= sticky.units.stop){
+							top = ($.browser.msie ? sticky.units.stop - settings.offset : sticky.units.stop);
+						}else if(top <= sticky.placeholder.offset().top){
+							top = sticky.placeholder.offset().top;
 						}
-						sticky.element.animate({
-							'top'	:	top
-						},settings.speed);	
-					}
+						sticky.element.stop().animate({
+							'top' : top
+						},settings.speed);
+					},100);
 				},
-			
-				'stop'	: function(top,location){
-					sticky.status = location == 'origin' ? 'origin' : 'stopped';
+				
+				'stick'		: function(top){
 					sticky.element
-						.removeClass(settings.classes.sticky)
-						.addClass(settings.classes.stopped);
-					if(!$.browser.msie){
+						.removeClass(settings.classes.start)
+						.removeClass(settings.classes.stopped)
+						.addClass(settings.classes.sticky);
+					
+					if(!$.browser.msie && settings.mode == 'fixed'){
 						sticky.element.css({
-							'top'		:	top,
-							'position'	:	'absolute',
-							'z-index'	:	'auto'
+							'top'		: top,
+							'position'	: 'fixed'
 						});
 					}
 				},
 			
-				'disable'	: function(){
-					sticky.status = 'disabled';
+				'stop'	: function(top,location){
+					var oldClass = (location == 'start'	? settings.classes.stopped : settings.classes.start);
+					var newClass = (location == 'stop'	? settings.classes.stopped : settings.classes.start);
+					
 					sticky.element
 						.removeClass(settings.classes.sticky)
-						.removeClass(settings.classes.stopped);
+						.removeClass(oldClass)
+						.addClass(newClass);
 						
-					if($.browser.msie){
-						sticky.element.animate({
-							'top'	:	sticky.units.origin + settings.offset
-						},settings.speed);
+					if(!$.browser.msie && settings.mode == 'fixed'){
+						sticky.element.css({
+							'top'		: top,
+							'position'	: 'absolute'
+						});
 					}else{
-						sticky.element.removeAttr("style");
+						sticky.animate(location == 'start' ? sticky.placeholder.offset().top : sticky.units.stop);
 					}
-				},
-				
-				'status'		: 'disabled'
+				}
 			}
 			
 			sticky.init($(this));
