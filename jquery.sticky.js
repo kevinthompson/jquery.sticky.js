@@ -6,7 +6,7 @@
 		
 		var settings = {
 			'offset'			: 20,
-			'mode'				: 'animate',
+			'mode'				: 'fixed',
 			'stopper'			: '',
 			'speed'				: 500,
 			'classes'			: {
@@ -105,7 +105,8 @@
 						// Update Position
 						} else if (!sticky.element.hasClass(settings.classes.sticky) && sticky.units.doctop > (sticky.units.start - settings.offset) && (sticky.stopper.length == 0 || (sticky.stopper.length > 0 && (sticky.units.doctop + settings.offset + sticky.element.outerHeight()) < sticky.units.stop))){
 							sticky.stick(settings.offset);
-							sticky.animate(sticky.units.doctop + settings.offset);
+							
+							if(settings.mode == 'animate') sticky.animate(sticky.units.doctop + settings.offset);
 
 							if (typeof stick == 'function') {
 						        stick.call(this);
@@ -166,7 +167,7 @@
 						.removeClass(oldClass)
 						.addClass(newClass);
 						
-					if(!settings.mode == 'fixed'){
+					if(settings.mode == 'fixed'){
 						sticky.element.css({
 							'top'		: top,
 							'position'	: 'absolute'
