@@ -51,7 +51,7 @@ element will remain attached to the window at the defined offset as the user scr
 the element will animate up or down to the position where the user stops scrolling. By default, Sticky uses 
 the `fixed` mode.
 
-*Note: Internet Explorer currently only supports the `animate` mode. If `fixed` is defined, all versions of IE will still use `animate`..*
+*Note: Internet Explorer currently only supports the `animate` mode. If `fixed` is defined, all versions of IE will still use `animate`.*
 
 ###stopper
 The stopper option accepts a selector to be used as a stopping point for the sticky element. When the sticky 
@@ -100,3 +100,7 @@ The onStick function is called only when an element becomes sticky (not while it
 	
 ###onStop
 If a stopper is defined, the onStop function is called when the element reaches its stopping position.
+
+Examples
+--------------------
+[HealthTree.com](http://www.healthtree.com/news/)
