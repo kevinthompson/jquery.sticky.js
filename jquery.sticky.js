@@ -32,12 +32,6 @@
 					
 					sticky.element = $this;
 					
-					// Set Base Units
-					sticky.units = {
-						'height'	: sticky.element.outerHeight(),
-						'start'		: sticky.element.offset().top - settings.offset
-					};
-					
 					// Find Stopper
 					if(settings.stopper != ''){
 						var stoppers		= $(settings.stopper).not('.' + settings.classes.placeholder);
@@ -46,9 +40,14 @@
 					
 					// Create Placeholder
 					sticky.placeholder = sticky.element.clone().empty().addClass(settings.classes.placeholder).css({
-						'opacity'	: 0,
-						'height'	: sticky.element.outerHeight()
+						'opacity'			: 0,
+						'height'			: sticky.element.height()
 					}).insertAfter(sticky.element);
+					
+					// Set Base Units
+					sticky.units = {
+						'start'		: sticky.placeholder.offset().top
+					};
 					
 					// Move Sticky Element
 					sticky.element
@@ -76,7 +75,7 @@
 						'width'	: sticky.placeholder.width(),
 						'left'	: sticky.placeholder.offset().left
 					});
-					sticky.placeholder.css('height',sticky.element.outerHeight());
+					sticky.placeholder.css('height',sticky.element.height());
 				
 					if((sticky.element.outerHeight() + settings.offset) < $window.height()){
 						
