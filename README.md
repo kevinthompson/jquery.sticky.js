@@ -103,4 +103,5 @@ If a stopper is defined, the onStop function is called when the element reaches 
 
 Examples
 --------------------
-[HealthTree.com](http://www.healthtree.com/news/)
+* [HealthTree.com](http://www.healthtree.com/news/) – Sidebar Navigation
+
