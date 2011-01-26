@@ -6,9 +6,9 @@
 		
 		var settings = {
 			'offset'			: 20,
-			'mode'				: 'animate',
+			'mode'				: 'fixed',
 			'stopper'			: '',
-			'speed'				: 500,
+			'speed'				: .5,
 			'classes'			: {
 				'element'		: 'jquery-sticky-element',
 				'start'			: 'jquery-sticky-start',
@@ -143,7 +143,7 @@
 						}
 						sticky.element.stop().animate({
 							'top' : top
-						},settings.speed);
+						},settings.speed * 1000);
 					},100);
 				},
 				
