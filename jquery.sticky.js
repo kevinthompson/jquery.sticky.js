@@ -121,6 +121,7 @@
 						'left'	: sticky.placeholder.offset().left
 					});
 					sticky.placeholder.css('height',sticky.element.height());
+					sticky.units.start = sticky.placeholder.offset().top;
 				  
 					if((sticky.element.outerHeight() + settings.offset) < $window.height()) {
 						
@@ -169,7 +170,6 @@
 						// Stop at starting position
 						} 
 						else if (
-						  !sticky.element.hasClass(settings.classes.start) && 
 						  sticky.units.doctop <= (sticky.units.start - settings.offset)
 						) {
 							sticky.stop(sticky.units.start,'start');
