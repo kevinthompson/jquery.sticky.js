@@ -45,6 +45,10 @@
         $.extend(settings,options);
 			}
 			
+			if ($(this).parent().hasClass(settings.classes.element)) {
+			  return;
+			}
+			
 			var $document = $(document);
 			var $window = $(window);
 			
@@ -126,6 +130,12 @@
 						// Update Animated Position
 						if(sticky.element.hasClass(settings.classes.sticky) && settings.mode == 'animate') {
 							sticky.animate(sticky.units.doctop + settings.offset);
+						}
+					
+						// Update Stop Position
+						if(typeof(sticky.stopper) != 'undefined' && sticky.stopper.length > 0) {
+							var margin = (parseInt(sticky.stopper.css('margin-top')) != undefined ? parseInt(sticky.stopper.css('margin-top')) : 0);
+							sticky.units.stop = sticky.stopper.offset().top - margin;
 						}
 						
 						// Stop at stopper
