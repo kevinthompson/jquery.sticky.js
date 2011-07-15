@@ -9,6 +9,7 @@
  * http://www.gnu.org/licenses/gpl.html
  *
  * @author:   Kevin Thompson <kevin@kevinthompson.info>
+ * @link:     https://github.com/kevinthompson/jquery.sticky.js
  * @version:  1.0
 **/ 
 
