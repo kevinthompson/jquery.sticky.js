@@ -59,6 +59,31 @@
 					$this.wrap('<div class="' + settings.classes.element + '" />');
 					sticky.element  = $this.parent();
 					
+					// Set Base Units
+					sticky.units = {
+						'start'		: sticky.element.offset().top
+					};
+					
+					// Find Stopper
+					if(settings.stopper != '') {
+					  var stoppers    = $(settings.stopper);
+					  if( stoppers.length > 0 ){
+					    var i = 0;
+  					  while(i < stoppers.length && typeof(sticky.stopper) == 'undefined'){
+  					    if( $(stoppers[i]).offset().top > sticky.element.offset().top + sticky.element.outerHeight() ){
+  						    sticky.stopper = $(stoppers[i]);
+  					    }
+  					    i++;
+  					  }
+					  }
+					
+						// Update Stop Position
+						if(typeof(sticky.stopper) != 'undefined' && sticky.stopper.length > 0) {
+							var margin = (parseInt(sticky.stopper.css('margin-top')) != undefined ? parseInt(sticky.stopper.css('margin-top')) : 0);
+							sticky.units.stop = sticky.stopper.offset().top - margin;
+						}
+					}
+					
 					// Create Placeholder
 					sticky.placeholder = sticky.element.clone().empty().attr('class',settings.classes.placeholder).css({
 						'opacity'			: 0,
@@ -76,23 +101,6 @@
 							'position'		  : 'absolute',
 							'z-index'		    : '999'
 						});
-					
-					// Set Base Units
-					sticky.units = {
-						'start'		: sticky.placeholder.offset().top
-					};
-					
-					// Find Stopper
-					if(settings.stopper != '') {
-						var stoppers		= $(settings.stopper).not('.' + settings.classes.placeholder);
-						sticky.stopper		= sticky.element.is(settings.stopper) ? stoppers.filter(':gt(' + stoppers.index(sticky.element) + ')').first() : stoppers.first();
-					
-						// Update Stop Position
-						if(sticky.stopper.length > 0) {
-							var margin = (parseInt(sticky.stopper.css('margin-top')) != undefined ? parseInt(sticky.stopper.css('margin-top')) : 0);
-							sticky.units.stop = sticky.stopper.offset().top - margin;
-						}
-					}
 					
 					// Bind Events
 					$window.bind('resize scroll', function () {
