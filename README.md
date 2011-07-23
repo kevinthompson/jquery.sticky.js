@@ -1,7 +1,6 @@
-
 Sticky
 ====================
-Sticky is a jQuery plugin that allows you to fix elements in place on the screen as the user scrolls.
+Sticky is a jQuery plugin that allows you to fix elements in place on the screen as the user scrolls. Sticky is different from other fixed element plugins in that it works in fluid layouts and allows you to define specific stop points for your sticky elements.
 
 Usage
 --------------------
