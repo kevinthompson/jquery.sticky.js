@@ -11,28 +11,28 @@ $('.selector').sticky();
 
 // Basic Options Defined
 $('.selector').sticky({
-	'offset' : 10,
-	'mode'   : 'animate'
+  'offset' : 10,
+  'mode'   : 'animate'
 });
 
 // All Options Defined
 $('.selector').sticky({
-	'offset'	: 20,
-	'mode'		: 'fixed',
-	'stopper'	: '.stopper',
-	'speed'		: .5,
+  'offset'  : 20,
+  'mode'    : 'fixed',
+  'stopper' : '.stopper',
+  'speed'   : .5,
 
-	'classes'	: {
-		'element'			: 'jquery-sticky-element',
-		'start'				: 'jquery-sticky-start',
-		'sticky'			: 'jquery-sticky-sticky',
-		'stopped'			: 'jquery-sticky-stopped',
-		'placeholder'	: 'jquery-sticky-placeholder'
-	},
-	
-	'onStart'	: function(){ },
-	'onStick'	: function(){ },
-	'onStop'	: function(){ }
+  'classes' : {
+    'element'     : 'jquery-sticky-element',
+    'start'       : 'jquery-sticky-start',
+    'sticky'      : 'jquery-sticky-sticky',
+    'stopped'     : 'jquery-sticky-stopped',
+    'placeholder' : 'jquery-sticky-placeholder'
+  },
+  
+  'onStart' : function(){ },
+  'onStick' : function(){ },
+  'onStop'  : function(){ }
 });
 ```
 
@@ -64,38 +64,38 @@ be changed to anything you'd like, but be advised that you may experience uninte
 class names already present in your CSS or elsewhere in your HTML.
 
 ``` javascript
-	'classes'	: {
-		'element'			: 'jquery-sticky-element',
-		'start'				: 'jquery-sticky-start',
-		'sticky'			: 'jquery-sticky-sticky',
-		'stopped'			: 'jquery-sticky-stopped',
-		'placeholder'	: 'jquery-sticky-placeholder'
-	},
+'classes' : {
+  'element'     : 'jquery-sticky-element',
+  'start'       : 'jquery-sticky-start',
+  'sticky'      : 'jquery-sticky-sticky',
+  'stopped'     : 'jquery-sticky-stopped',
+  'placeholder' : 'jquery-sticky-placeholder'
+}
 ```
 
 Callback Functions
 --------------------
 Sticky accepts three callback functions.
 ``` javascript
-	$('.selector').sticky({
-		'onStart'	: function(){
-			// Called when the element reaches it's starting position
-		},
-		'onStick'	: function(){
-			// Called when the element becomes sticky
-		},
-		'onStop'	: function(){
-			// Called when the element reaches it's stopping position
-		}
-	});
+$('.selector').sticky({
+  'onStart' : function(){
+    // Called when the element reaches it's starting position
+  },
+  'onStick' : function(){
+    // Called when the element becomes sticky
+  },
+  'onStop'  : function(){
+    // Called when the element reaches it's stopping position
+  }
+});
 ```
-	
+  
 ###onStart
 The onStart callback is called when the script is initiated as well as when the element returns to its starting position
-	
+  
 ###onStick
 The onStick function is called only when an element becomes sticky (not while it retains its sticky state). This event occurs when the element leaves its starting position, or when it moves away from a stopping position.
-	
+  
 ###onStop
 If a stopper is defined, the onStop function is called when the element reaches its stopping position.
 
