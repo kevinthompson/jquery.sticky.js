@@ -4,39 +4,37 @@ Sticky is a jQuery plugin that allows you to fix elements in place on the screen
 
 Usage
 --------------------
-	// Simple
-	$('.selector').sticky();
+
+``` javascript
+// Simple
+$('.selector').sticky();
+
+// Basic Options Defined
+$('.selector').sticky({
+	'offset' : 10,
+	'mode'   : 'animate'
+});
+
+// All Options Defined
+$('.selector').sticky({
+	'offset'	: 20,
+	'mode'		: 'fixed',
+	'stopper'	: '.stopper',
+	'speed'		: .5,
+
+	'classes'	: {
+		'element'			: 'jquery-sticky-element',
+		'start'				: 'jquery-sticky-start',
+		'sticky'			: 'jquery-sticky-sticky',
+		'stopped'			: 'jquery-sticky-stopped',
+		'placeholder'	: 'jquery-sticky-placeholder'
+	},
 	
-	// Basic Options Defined
-	$('.selector').sticky({
-		'offset' : 10,
-		'mode'   : 'animate'
-	});
-	
-	// All Options Defined
-	$('.selector').sticky({
-		'offset'			: 20,
-		'mode'				: 'fixed',
-		'stopper'			: '.stopper',
-		'speed'				: .5,
-		'classes'			: {
-			'element'		: 'jquery-sticky-element',
-			'start'			: 'jquery-sticky-start',
-			'sticky'		: 'jquery-sticky-sticky',
-			'stopped'		: 'jquery-sticky-stopped',
-			'placeholder'	: 'jquery-sticky-placeholder'
-		},
-		
-		'onStart'			: function(){
-			
-		},
-		'onStick'			: function(){
-			
-		},
-		'onStop'			: function(){
-			
-		}
-	});
+	'onStart'	: function(){ },
+	'onStick'	: function(){ },
+	'onStop'	: function(){ }
+});
+```
 
 Options
 --------------------
@@ -65,20 +63,20 @@ are given a lengthy namespace so they are less likely to conflict with your exis
 be changed to anything you'd like, but be advised that you may experience unintended consequences if you use
 class names already present in your CSS or elsewhere in your HTML.
 
-	...
-	'classes'			: {
-		'element'		: 'jquery-sticky-element',
-		'start'			: 'jquery-sticky-start',
-		'sticky'		: 'jquery-sticky-sticky',
-		'stopped'		: 'jquery-sticky-stopped',
+``` javascript
+	'classes'	: {
+		'element'			: 'jquery-sticky-element',
+		'start'				: 'jquery-sticky-start',
+		'sticky'			: 'jquery-sticky-sticky',
+		'stopped'			: 'jquery-sticky-stopped',
 		'placeholder'	: 'jquery-sticky-placeholder'
 	},
-	...
+```
 
 Callback Functions
 --------------------
 Sticky accepts three callback functions.
-
+``` javascript
 	$('.selector').sticky({
 		'onStart'	: function(){
 			// Called when the element reaches it's starting position
@@ -90,6 +88,7 @@ Sticky accepts three callback functions.
 			// Called when the element reaches it's stopping position
 		}
 	});
+```
 	
 ###onStart
 The onStart callback is called when the script is initiated as well as when the element returns to its starting position
@@ -104,4 +103,3 @@ Examples
 --------------------
 * [HealthTree.com](http://www.healthtree.com/news/) – Sidebar Navigation
 * [Kevin Thompson](http://kevinthompson.info/) – Blog Post Navigation
-
