@@ -99,6 +99,10 @@ The onStick function is called only when an element becomes sticky (not while it
 ###onStop
 If a stopper is defined, the onStop function is called when the element reaches its stopping position.
 
+Common Issues
+--------------------
+- Top margin on the first element within the `body` tag will can cause fixed positioning to be inaccurate.
+
 Examples
 --------------------
 * [HealthTree.com](http://www.healthtree.com/news/) – Sidebar Navigation
