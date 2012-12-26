@@ -102,8 +102,3 @@ If a stopper is defined, the onStop function is called when the element reaches 
 Common Issues
 --------------------
 - Top margin on the first element within the `body` tag will can cause fixed positioning to be inaccurate.
-
-Examples
---------------------
-* [HealthTree.com](http://www.healthtree.com/news/) – Sidebar Navigation
-* [Kevin Thompson](http://kevinthompson.info/) – Blog Post Navigation
